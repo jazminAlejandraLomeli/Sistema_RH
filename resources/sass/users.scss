@@ -1,0 +1,19 @@
+// Variables
+@import 'variables';
+
+.btn-grid{
+    background-color: transparent;
+    border: none;
+      transition: transform 0.3s ease;
+
+}
+
+.btn-grid:hover{
+     transform: scale(1.1); 
+filter: drop-shadow(0 0 0.6rem rgb(126, 125, 125));
+}
+
+.bg-grid {
+    background-color: #373cc4 !important;
+    font-style: normal;
+}

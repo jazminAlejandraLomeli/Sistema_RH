@@ -1,0 +1,61 @@
+// Variables
+@import "variables";
+
+.card {
+    background-color: $bg-container !important;
+}
+.boton-abajo {
+    margin-top: 10px;
+    margin-bottom: -55px;
+}
+
+.red-Color {
+    color: rgb(167, 3, 3);
+}
+.cont_img img {
+    max-width: 105px;
+    max-height: 105px;
+    object-fit: cover; /* Evita distorsión y mantiene el encuadre */
+}
+
+/* Contenedor que sincroniza el tamaño con el textarea */
+.grow-wrap {
+    display: grid;
+}
+
+/* Elemento invisible que replica el contenido */
+.grow-wrap::after {
+    content: attr(data-replicated-value) " "; /* Espacio evita saltos */
+    white-space: pre-wrap; /* Mantiene saltos de línea */
+    visibility: hidden;
+}
+
+/* Estilos para el textarea */
+.grow-wrap > textarea {
+    resize: none; /* Deshabilita el redimensionamiento manual */
+    overflow: hidden; /* Oculta scroll en Firefox */
+}
+
+/* Asegura que ambos elementos sean idénticos en tamaño y fuente */
+.grow-wrap > textarea,
+.grow-wrap::after {
+    border: 1px solid #ced4da;
+    padding: 0.5rem;
+    font: inherit;
+    grid-area: 1 / 1 / 2 / 2; /* Se superponen */
+    width: 100%;
+}
+
+.bg-grid {
+    background-color: #373cc4 !important;
+    font-style: normal;
+}
+
+
+.semblanza{
+    min-height: 100px;
+
+
+    max-height: 180px;
+    overflow-y: auto;
+}

@@ -1,0 +1,263 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,700;1,500&display=swap");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "bootstrap/scss/bootstrap";
+@import "@fortawesome/fontawesome-free/css/all.css";
+
+
+body{
+    background-color: $bg-primary;
+}
+
+/* Side Bar */
+
+// -- Header sidebar -- //
+#header {
+    background-color: $primary;
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    z-index: 5;
+    transition: left 0.3s ease-in-out, width 0.4s ease-in-out;
+   
+}
+
+#headerTop {
+    background: $Degradado;
+}
+
+.hamburger-container{
+    width: 100%;
+    height: 55px;
+    background-color: $white;
+    position: fixed;
+    z-index: 3;
+    box-shadow: 12px 7px 27px 0px rgba(0,0,0,0.1);
+}
+
+.pt-custom{
+    padding: 0;
+}
+
+.hamburger-custom {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    width: 45px;
+    height: 45px;
+    color: black;
+    cursor: pointer;
+    z-index: 0;
+}
+
+
+#header {
+
+    &.compress-sidebar{
+        width: 80px;
+    }
+
+    .hidden{
+        
+        display: initial;
+
+        &.active{
+            display: none;
+        }
+    }
+
+    
+    .logo-custom {
+        height: 50px;
+    }
+
+    .collapseIcon {
+        width: 40px;
+        height: 40px;
+    
+        padding: 5px;
+        color: $white;
+        cursor: pointer;
+        transition: transform 0.6s ease-in-out;
+    }
+    
+     .btn-header {
+        transition: background-color 0.3s ease-in-out;
+        border-radius: 8px;
+    }
+    
+     .btn-header:hover {
+        background-color: $secundary;
+    }
+    
+     .btn-header:last-child {
+        display: initial;
+    }
+    
+     .btn-header:last-child {
+        display: none;
+    }
+    
+    // NavBar options
+    
+     .title-custom-header {
+        color: $white;
+        font-size: 1.4rem;
+        font-weight: 700;
+    }
+    
+     .nav-options {
+        list-style: none;
+        padding: 0;
+    }
+
+     .nav-options li a {
+        text-decoration: none;
+        color: $white;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+
+        span{
+            margin-left: 10px;
+            flex-grow: 1;
+        }
+    }
+
+    
+
+    .nav-options li a:hover {
+        background: $Degradado;
+    }
+}
+
+.navbar-submenu{
+    // margin-left: 30px !important;
+    background-color: $secundary;
+}
+
+#footer-sidebar{
+    background: $Degradado;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 10px;
+    padding: 0 10px;
+    border-radius: 10px;
+
+    p{
+        color: $white;
+        font-size: 0.8rem;    
+    }
+
+    .btn-header-custom{
+        border: none;    
+        background: none;
+        padding: 0px;
+    }
+
+    .btn-header-close-session{
+        border: none;
+        width: 100%;
+        background-color: $white;
+    }
+}
+
+
+.icons-navbar {
+    width: 20px;
+    height: 20px;
+    color: $white;
+}
+
+
+// Main container
+#containerMain{
+    margin-left: 315px;
+    width: calc(100% - 320px);
+    min-height: 100vh;
+    transition: all 0.3s ease-in-out;
+}
+
+
+#containerMain {
+    &.compress-main {
+        margin-left: 100px;
+        width: calc(100% - 100px);
+    }
+}
+
+#header.movil-compress {
+    left: 0px;
+}
+
+.bg-blue-primary{
+    background-color: $primary;
+}
+
+.btn-close{
+    color: white;
+}
+
+/* Media queries*/
+
+// Movil
+@media (max-width: 768px) {
+
+    #header{
+        left: -300px;
+
+            &.active {
+                left: 0px;
+            }
+        
+
+        .btn-header:first-child {
+            display: none;
+        }
+    
+         .btn-header:last-child {
+            display: initial;
+        }
+
+        .hidden{
+        
+            &.active{
+                display: initial;
+            }
+        }
+
+        &.compress-sidebar{
+            left: -120px;
+        }
+        
+    }
+
+
+    #containerMain {
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    #containerMain.compress-main {
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    .pt-custom{
+        padding: 65px 0px 0px 0px;
+    }
+
+    
+    
+
+    
+}
