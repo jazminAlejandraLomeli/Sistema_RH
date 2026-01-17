@@ -12,9 +12,10 @@ class Select extends Component
     public string $label;
     public string $name;
     public array $options;
-    public string $selected;
+    public string|array $selected;
     public bool $requiredIndicator;
     public bool $disableIndicator;
+    public bool $multiple;
 
 
 
@@ -27,9 +28,11 @@ class Select extends Component
         string $label,
         string $name,
         array $options = [],
-        string $selected = '',
+        string|array $selected = '',
         bool $requiredIndicator = false,
         bool $disableIndicator = false,
+        bool $multiple = false,
+
 
     ) {
         $this->id = $id;
@@ -39,6 +42,7 @@ class Select extends Component
         $this->selected = $selected;
         $this->requiredIndicator = $requiredIndicator;
         $this->disableIndicator = $disableIndicator;
+        $this->multiple = $multiple || str_ends_with($name, '[]');
     }
 
     /**

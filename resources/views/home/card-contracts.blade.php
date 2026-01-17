@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mb-3">
 
 
     <p class="text-start pb-2 mb-0 mt-2 fs-5  ">
@@ -8,9 +8,6 @@
         <i> Detalles de los tipos <b>Contratos</b> </i>
 
     </p>
-
-
-
 
     <div class="col-12 col-md-4 col-xl-4 mb-3">
         <div class="card p-1 ">
@@ -28,7 +25,7 @@
 
                 <div class="col d-flex flex-column mb-1 align-items-end pt-1 text-muted ">
                     <span class="pe-1 fw-semibold fs-4">
-                        {{ $CountContracts['Definitivo']['Total'] }}
+                        {{ $CountContracts['Definitivo']['Total'] ?? 0 }}
 
                     </span>
                 </div>
@@ -46,7 +43,7 @@
                 </div>
                 <div class="col d-flex flex-column text-muted  mb-1 align-items-end pt-1">
                     <span class="pe-1 fw-semibold fs-4">
-                        {{ $CountContracts['Temporal']['Total'] }}
+                        {{ $CountContracts['Temporal']['Total'] ?? 0 }}
 
                     </span>
 
@@ -64,7 +61,7 @@
                 </div>
                 <div class="col d-flex flex-column text-muted  mb-1 align-items-end pt-1">
                     <span class="pe-1 fw-semibold fs-4">
-                        {{ $CountContracts['Interinato']['Total'] }}
+                        {{ $CountContracts['Interinato']['Total'] ?? 0}}
 
                     </span>
 
@@ -74,17 +71,14 @@
     </div>
 
 
-    {{-- 
-        Totales activos en tabla Administrativo 
-        @foreach ($CountContracts as $tipo => $valores)
-             <x-male-female-stadistic :title="$tipo" :male="$valores['Male']" :female="$valores['Female']" :total="$valores['Total']"
-                tooltip="Resumen de los contratos por tipo" />
-         @endforeach
-
- --}}
 
     <x-male-female-stadistic title="contratos de Honorarios" male="{{ $t_honorarios['Male'] }}"
-        female="{{ $t_honorarios['Female'] }}" total="{{ $t_honorarios['Total'] }}" tooltip="" />
+        female="{{ $t_honorarios['Female'] }}" total="{{ $t_honorarios['Total'] }}" />
+ 
+
+ @include('home.card-birthday')
+
+
 </div>
 
 
@@ -96,11 +90,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 22 22">
             <path fill="#0284c7" d="M9 5H8v12h1v-1h1v-1h1v-1h1v-1h1v-1h1v-2h-1V9h-1V8h-1V7h-1V6H9" />
         </svg>
-        <i>Próximos contrartos por <b>vencer </b> o <b>expirados</b> </i>
+        <i>Próximos contratos por <b>vencer </b> o <b>expirados</b> </i>
 
     </p>
 
-    <x-colorful-card :title="'C. Temporales'" :count="intval($statuses_contracts['T_Proximos'])" :subtitle="'Próximos a vencer'" :color="'card-proximos'" :link="route('personal.index', ['param' => 'Temporal'])">
+    <x-colorful-card :title="'C. Temporales'" :count="intval($statuses_contracts['T_Proximos'])" :subtitle="'Próximos a vencer'" :color="'card-proximos'" :link="route('worker.index', ['param' => 'Temporal'])">
         <x-slot name="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
                 <path fill="#ea580c" fill-rule="evenodd"
@@ -111,7 +105,7 @@
     </x-colorful-card>
 
 
-    <x-colorful-card :title="'C. de Temporales'" :count="intval($statuses_contracts['T_Expirados'])" :subtitle="'Expirados'" :color="'card-expirados'" :link="route('personal.index', ['param' => 'Expired-Temporal'])">
+    <x-colorful-card :title="'C. de Temporales'" :count="intval($statuses_contracts['T_Expirados'])" :subtitle="'Expirados'" :color="'card-expirados'" :link="route('worker.index', ['param' => 'Expired-Temporal'])">
         <x-slot name="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 12 12">
                 <path fill="#dc2626"
@@ -121,7 +115,7 @@
     </x-colorful-card>
 
 
-    <x-colorful-card :title="'C. de Interinato'" :count="intval($statuses_contracts['I_Proximos'])" :subtitle="'Próximos a vencer'" :color="'card-proximos'" :link="route('personal.index', ['param' => 'Interinato'])">
+    <x-colorful-card :title="'C. de Interinato'" :count="intval($statuses_contracts['I_Proximos'])" :subtitle="'Próximos a vencer'" :color="'card-proximos'" :link="route('worker.index', ['param' => 'Interinato'])">
         <x-slot name="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
                 <path fill="#ea580c" fill-rule="evenodd"
@@ -133,7 +127,7 @@
 
 
 
-    <x-colorful-card :title="'C. de Interinato'" :count="intval($statuses_contracts['I_Expirados'])" :subtitle="'Expirados'" :color="'card-expirados'" :link="route('personal.index', ['param' => 'Expired-Interinato'])">
+    <x-colorful-card :title="'C. de Interinato'" :count="intval($statuses_contracts['I_Expirados'])" :subtitle="'Expirados'" :color="'card-expirados'" :link="route('worker.index', ['param' => 'Expired-Interinato'])">
         <x-slot name="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 12 12">
                 <path fill="#dc2626"
@@ -141,6 +135,8 @@
             </svg>
         </x-slot>
     </x-colorful-card>
+
+
 
 
 

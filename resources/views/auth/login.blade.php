@@ -1,5 +1,9 @@
 @extends('layouts.auth')
 
+@section('meta')
+    <meta name="description" content="Accede al sistema SIP-CUAltos.">
+ @endsection
+
 @section('content')
     <div class="container-custom-login rounded-4">
         <div class="black-screen-custom">
@@ -61,7 +65,7 @@
                                         <input type="password" class="form-control form-control-custom py-2" id="password"
                                             name="password">
                                         <span class="input-group-text" id="togglePassword"
-                                            style="cursor:pointer; background:#373CC4;">
+                                            style="cursor:pointer; background:#064E3B;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                 viewBox="0 0 24 24">
                                                 <g fill="none" stroke="#ffffff" stroke-linecap="round"
@@ -89,7 +93,7 @@
         </div>
     </div>
 
-   
+
 @endsection
 
 @section('scripts')

@@ -8,9 +8,15 @@ use App\Http\Controllers\Personas_TrabajoController;
 use App\Http\Controllers\AddPersonController;
 use App\Http\Controllers\DesignerController;
 use App\Http\Controllers\DirectoryController;
+use App\Http\Controllers\DomicilioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HonorarioController;
+use App\Http\Controllers\InternalManageController;
+use App\Http\Controllers\LogController;
 use App\Models\Honorario;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -51,24 +57,43 @@ Route::middleware('auth')->group(function () {
 
     /* Ver datos de personal */
     Route::prefix('/personal')->group(function () {
-        Route::get('/', [PersonasController::class, 'index'])->name('personal.index');        
-        Route::get('/obt-personal', [PersonasController::class, 'getWorkers'])->name('personal.getWorkers');
+        Route::get('/', [PersonasController::class, 'index'])->name('worker.index');
+        Route::get('/obt-personal', [PersonasController::class, 'getWorkers'])->name('worker.personal.getWorkers');
         /* Mostrar detalles de un registro */
-        Route::get('/detalles/{codigo}', [Personas_TrabajoController::class, 'mostrarDetalles'])->name('detalles.mostrar');
+        Route::get('/detalles/{codigo}', [Personas_TrabajoController::class, 'details'])->name('worker.detalles.mostrar');
+        Route::get('/detalles/add-job/{codigo}', [Personas_TrabajoController::class, 'addJob'])->name('worker.detalles.add-job');
+        Route::post('/Agregar-Nom', [Personas_TrabajoController::class, 'storeJob'])->name('worker.detalles.Agregar-Nom');
 
         // Rutas que requieren privilegios de administrador
         Route::middleware('checkPrivileges:Administrador')->group(function () {
 
-            Route::put('/editar-datos/{id}', [PersonasController::class, 'updatePerson'])->name('personal.details.update.personaldata');
-            Route::post('/distincion-adicional', [AddPersonController::class, 'search_distincion'])->name('personal.details.distincion-adicional');      /* Jalar datos para formulario */
-            Route::put('/editar-Nombra/{id}', [Personas_TrabajoController::class, 'editarNomb'])->name('editar-Nombra');
-            Route::post('/Agregar-Nom', [Personas_TrabajoController::class, 'guardarNombramiento'])->name('Agregar-Nom');      /* Editar datos de los nombramientos */
+            Route::get('/detalles/edit-personal/{id}', [PersonasController::class, 'edit'])->name('worker.detalles.edit-personal');
+            Route::put('/actualizar-datos', [PersonasController::class, 'update'])->name('personal.details.update.personaldata');
+
+
+            Route::get('/detalles/edit-address/{id}', [DomicilioController::class, 'edit'])->name('worker.detalles.edit-address');
+            Route::put('/update-address', [DomicilioController::class, 'update'])->name('personal.details.update.personaldata');
+
+            ///
+            Route::get('/detalles/edit-job/{id}', [Personas_TrabajoController::class, 'edit'])->name('worker.detalles.edit-job');
+            Route::put('/update-job', [Personas_TrabajoController::class, 'update'])->name('personal.details.update.job');
+
+
+            // LLenado del formulario de nombramiento
+            Route::post('/get-categories', [InternalManageController::class, 'getCategories'])->name('worker.get-categories');
+            Route::post('/searchCode', [InternalManageController::class, 'Search_Code'])->name('worker.searchCode');
+
+            Route::put('/delete-job', [Personas_TrabajoController::class, 'delete'])->name('worker.delete-job');
+            Route::put('/switch-job', [Personas_TrabajoController::class, 'switchJob'])->name('worker.switch-job');
+
+
             //Agregar Personal
             Route::get('/agregar_personal', [AddPersonController::class, 'index'])->name('personal.agregar_personal');
-            Route::post('/searchCode', [AddPersonController::class, 'Search_Code'])->name('searchCode');   /* Verifica que el codigo no choque con otro */
-            Route::post('/guardar-Personal', [AddPersonController::class, 'guardarPersonal'])->name('personal.store');
+            Route::post('/add-new-worker', [AddPersonController::class, 'store'])->name('personal.store');
         });
     });
+
+    
 
 
     Route::middleware('checkPrivileges:Administrador')->group(function () {
@@ -78,14 +103,31 @@ Route::middleware('auth')->group(function () {
             Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
             Route::post('/On_Off_User', [UserController::class, 'On_Off_User'])->name('users.delete');
             Route::post('/get_details', [UserController::class, 'get_details'])->name('users.get_details');
+
+
             Route::post('/verificar-codigo', [UserController::class, 'CheckUsers'])->name('users.verificar-codigo');
             Route::post('/agregar-usuario', [UserController::class, 'store'])->name('agregar-usuario');
             Route::post('/editar-usuario', [UserController::class, 'Update'])->name('users.editar-usuario');
+
+            Route::prefix('/logs')->group(function () {
+                Route::get('/', [LogController::class, 'index'])->name('logs.index');
+                Route::get('/get-logs', [LogController::class, 'getLogs'])->name('logs.getLogs');
+
+
+                Route::get('/component/log-icon', function (Request $request) {
+                    return View::make('components.type-log-icon-component', [
+                        'text' => $request->get('text', 'Actualización'),
+                        'type' => $request->get('type', 'update-worker'),
+                    ])->render();
+                });
+          
+            });
         });
 
+
+
+
         Route::post('/editar-usuario', [UserController::class, 'Update'])->name('editar-usuario');
-        Route::put('/eliminar-nombramiento', [Personas_TrabajoController::class, 'eliminarNomb'])->name('eliminar-nombramiento');
-        Route::put('/cambiar-nombramiento', [Personas_TrabajoController::class, 'cambiarNombramiento'])->name('cambiar-nombramiento');
 
         // Routas para el módulo de administrativos
         Route::prefix('/honorarios')->group(function () {
@@ -114,23 +156,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/directorio', [DirectoryController::class, 'index'])->name('directory.index');
         Route::get('/directorio/obtener-foto/{photo}', [DesignerController::class, 'showPhoto'])->name('designer.get.photo');
     });
-
-    
-    
-
-
-    // Route::get('/directorio',[DesignerController::class,''])->name('directory.index');
-    // Route::get('/obtener-directorio',[PersonasController::class,''])->name('directory.get.directory');
-
-
-
-    // ///ROL DE ADMINISTRADOR 
-    // Route::middleware('checkPrivileges:Administrador')->group(function () {
-    //     Route::post('/editar-usuario', [UserController::class, 'Update'])->name('editar-usuario');
-    //     Route::put('/eliminar-nombramiento/{id}', [Personas_TrabajoController::class, 'eliminarNomb'])->name('eliminar-nombramiento');
-    //     Route::put('/cambiar-nombramiento/{id}', [Personas_TrabajoController::class, 'cambiarNombramiento'])->name('cambiar-nombramiento');
-    // });
 });
 
 Route::get('/foto/{photo}', [DesignerController::class, 'showPhoto'])->name('designer.update');
-

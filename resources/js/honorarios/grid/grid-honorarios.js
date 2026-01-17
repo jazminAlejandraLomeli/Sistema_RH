@@ -164,7 +164,7 @@ export async function initialData() {
                 },
             },
             className: {
-                th: "thead-color text-black",
+                th: "thead-color text-white bg-grid",
                 search: "d-flex justify-content-center justify-content-lg-end w-100 py-2",
             },
             autoWidth: true,

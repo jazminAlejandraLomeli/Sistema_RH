@@ -60,6 +60,41 @@ export async function initialData(baseUrl) {
                 {
                     id: "nombramiento",
                     name: "Nombramiento",
+                    formatter: (_, row) => {
+                        const nombramiento = row.cells[4].data;
+                        
+
+                        let colorNombramiento = null;
+                        if (nombramiento === '--') {
+                            colorNombramiento = h(
+                                "p",
+                                {
+                                    className: "text-danger fw-medium",
+                                },
+
+                                'SIN NOMBRAMIENTO'
+                            );
+                        } else{
+                            colorNombramiento = h(
+                                "p",
+                                {
+                                    className:
+                                        "text-primary-emphasis fw-medium",
+                                },
+                                nombramiento
+                            );
+                        } 
+
+                        return h(
+                            "div",
+                            {
+                                className:
+                                    "d-flex justify-content-start align-items-start",
+                            },
+                            colorNombramiento
+                        );
+                    },
+                    sort: false,
                 },
                 {
                     id: "estatus",
@@ -161,7 +196,6 @@ export async function initialData(baseUrl) {
             server: {
                 url: baseUrl,
                 then: (data) => {
-                 
                     return data.results.map((person) => [
                         person.id,
                         person.id_estado,

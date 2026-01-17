@@ -17,6 +17,8 @@ class Input extends Component
     public bool $requiredIndicator;
     public bool $disableIndicator;
     public ?int $maxlength;  // Añadido para manejar el atributo maxlength
+    public ?string $placeolder;  // Añadido para manejar el atributo maxlength
+
 
     /**
      * Create a new component instance.
@@ -30,7 +32,8 @@ class Input extends Component
         bool $uppercase = false,
         bool $requiredIndicator = false,
         bool $disableIndicator = false,
-        ?int $maxlength = null // Nuevo parámetro opcional para maxlength
+        ?int $maxlength = null,  
+        ?string $placeolder = null  
     ) {
         $this->id = $id;
         $this->label = $label;
@@ -40,7 +43,8 @@ class Input extends Component
         $this->uppercase = $uppercase;
         $this->requiredIndicator = $requiredIndicator;
         $this->disableIndicator = $disableIndicator;
-        $this->maxlength = $maxlength;  // Asigna el valor de maxlength
+        $this->maxlength = $maxlength;   
+        $this->placeolder = $placeolder;   
     }
 
     /**

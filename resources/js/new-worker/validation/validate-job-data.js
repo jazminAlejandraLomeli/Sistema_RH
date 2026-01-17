@@ -1,33 +1,49 @@
 /* Funcion que obtiene losa datos del formulario y los valida */
 import {
     validarCampo,
-    regexCode,
-    regexLetters,
     regexNumero,
     regexFecha,
-    regexCorreo,
-    ocultarerr,
-    mostrarerr,
-    fechaActual,
-    automaicScroll,
     regexLetrasHorario,
     regexArea,
-    regexTelefono,
-
-    
 } from "../../helpers/generalFuntions";
 
-export function Validate_Data() {
+export function ValidateJOBData(JobData) {
     var band = 0;
+    const {
+        Nombramiento,
+        Categoria,
+        Adicional,
+        Adscripcion,
+        Oficial,
+        Horas,
+        Turno,
+        Contrato,
+        Vencimiento,
+        Departamentos,
+        Semblanza,
+    } = JobData;
     // Obtener los valores
+
+    // Nombramiento: $("#nombramientos"),
+    // Categoria: $("#categorias"),
+    // Adicional: $("#name_P"),
+    // Adscripcion: $("#dep"),
+    // Oficial: $("#hor_oficial"),
+    // Horas: $("#hours"),
+    // Turno: $("#shift"),
+    // Contrato: $("#contrato"),
+    // Vencimiento: $("#Emer_name"),
+    // Departamentos: $("#department"),
+    //     Semblanza: $("#semblanza"),
+
     var nombramiento = $("#nombramientos").val();
     var id_categoria = $(".categorias").val();
-    var area_distincion = $(".dep").val();
+    var area_distincion = $("#dep").val();
     var distincion_adicional = $("#Distincion_Adicional").val();
     var horario_oficial = $("#hor_oficial").val().trim();
     var turno = $("#shift").val();
     var tipo_contrato = $("#contrato").val();
-    var fecha_termino = $(".fecha_termino").val();
+    var fecha_termino = $("#fecha_termino").val();
     var horas_trabajo = $("#hours").val();
     const departament = $("#department").val();
     const semblanza = $("#semblanza").val();
@@ -59,17 +75,17 @@ export function Validate_Data() {
         let V_fechaT = validarCampo(
             fecha_termino,
             regexFecha,
-            ".fecha_termino"
+            "#fecha_termino"
         );
 
         if (!V_fechaT) {
             band = 1;
         } else {
-            $(".fecha_termino").removeClass("border border-error");
+            $("#fecha_termino").removeClass("border border-error");
             band = 0;
         } // No puede estar vacio
     }
-    
+
     let V_semblanza = true;
     // Validar si el nombramiento es profesor de asignatura validar que solamente exista al menos un departamento seleccionado
     if (V_nombramiento && nombramiento == 6) {
@@ -88,12 +104,10 @@ export function Validate_Data() {
             span.hide();
         }
 
-
-        if (semblanza !== "") {  // Validar si el campo de la semblanza no esta vacio
+        if (semblanza !== "") {
+            // Validar si el campo de la semblanza no esta vacio
             V_semblanza = validarCampo(semblanza, regexArea, "#semblanza");
         }
-
-        
     }
 
     if (
@@ -105,7 +119,7 @@ export function Validate_Data() {
         V_tipo &&
         V_turno &&
         V_horasT &&
-        validateDepartamento  &&
+        validateDepartamento &&
         V_semblanza
     ) {
         const JobData = {
@@ -124,6 +138,19 @@ export function Validate_Data() {
 
         return JobData;
     } else {
+        // console.log("No se cumplen las validaciones");
+        // console.log(
+        //     band  ,
+        //         V_nombramiento ,
+        //         V_categoria ,
+        //         V_area ,
+        //         V_horarioOf ,
+        //         V_tipo ,
+        //         V_turno ,
+        //         V_horasT ,
+        //         validateDepartamento ,
+        //         V_semblanza
+        // );
         return null; // o null, según lo que esperes en el código que recibe este return
     }
 }

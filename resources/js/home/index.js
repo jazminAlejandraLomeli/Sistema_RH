@@ -3,17 +3,34 @@
         Para ver detalles
 */
 
-import { activeLoading, disableLoading } from "../loading-screen.js";
-import { automaicScroll } from "../helpers/generalFuntions.js";
-
+import { disableLoading } from "../loading-screen.js";
 
 $(document).ready(function () {
-    //Contadores();
 
-    //details_card();
-    
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');    
     disableLoading();
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+    );
+
+    tooltipTriggerList.forEach(function (el) {
+        // Arreglar title vacío antes de inicializar
+        let title =
+            el.getAttribute("title") ?? el.getAttribute("data-bs-title");
+
+        if (!title || title.trim() === "") {
+            el.setAttribute("title", " ");
+        }
+
+        // Evitar que Bootstrap arroje error en consola
+        try {
+            new bootstrap.Tooltip(el);
+        } catch (e) {
+            // No mostrar error
+          //  console.error('Error initializing tooltip:', e);
+        }
+    });
+});
 

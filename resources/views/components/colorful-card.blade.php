@@ -9,18 +9,16 @@
         </div>
 
         <div class="col-12 text-start mx-0 d-flex justify-content-between px-3">
-            @if($link)
-                <a href="{{ $link }}" class="fs-2 fw-bold rounded-icon">
-                    {{ $count }}
-                </a>
-            @else
-                <span class="fs-2 fw-bold rounded-icon">
-                    {{ $count }}
-                </span>
-            @endif
-            
+
+            <a href="{{ $link ?? '#' }}" class="fs-2 fw-bold rounded-icon">
+                {{ $count }}
+            </a>
+
             <div class="mt-2">
-                {{ $icon }}
+                <a href="{{ $link ?? '#' }}" class="rounded-icon">
+                    {{ $icon }}
+                </a>
+
             </div>
         </div>
 

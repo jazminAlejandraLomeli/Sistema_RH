@@ -19,15 +19,18 @@ class Administrativo extends Model
         'codigo',
         'nombre',
         'foto_url',
+        'correo', 
+        'tel_emergencia',
+        'telefono',
+        'nombre_emergencia',
         'fecha_nacimiento',
         'fecha_ingreso',
         'sexo',
         'ultimo_grado',
-        'estado_id', 
-        'correo', 
-        'tel_emergencia',
         'e_parentesco',
-        'nombre_emergencia',
+        'estado_id', 
+        'rfc',
+        'nss',
         'created_by',
         'updated_by', 
     ];
@@ -56,5 +59,15 @@ class Administrativo extends Model
     {
         return $this->hasOne(Honorario::class, 'administrativo_id','id');
     }
+
+    public function domicilio()
+    {
+        return $this->hasOne(Domicilio::class, 'administrativo_id');
+    }
+
+
+
     
+
+   
 }

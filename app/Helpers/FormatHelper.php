@@ -2,71 +2,82 @@
 
 namespace App\Helpers;
 
+use App\Models\Estado;
+
 class FormatHelper
 {
     public static function getSexo($genero)
     {
-        $sexos = [
-            '1' => 'Masculino',
-            '2' => 'Femenino',
-        ];
+        $genders = collect(config('collections.sexo'));
 
-        return $sexos[$genero] ?? null;
+        return $genders->firstWhere('id', (int)$genero)['nombre'] ?? null;
+    }
+
+    /*
+    Funcion para obtener el id de un genero
+*/
+    public static function getSexoId($nombre)
+    {
+        $genders = collect(config('collections.sexo'));
+       
+        return $genders->firstWhere('nombre', ucfirst(strtolower($nombre)))['id'] ?? null;
     }
 
     public static function getTurno($turno)
     {
-        $turnos = [
-            '1' => 'Matutino',
-            '2' => 'Vespertino',
-            '3' => 'Nocturno',
-            '4' => 'Mixto',
-            '5' => 'No aplica',
-        ];
+        $turnos = collect(config('work-collections.Shifts'));
 
-        return $turnos[$turno] ?? null;
+        return $turnos->firstWhere('id', (int)$turno)['nombre'] ?? null;
     }
 
     public static function getContrato($contrato)
     {
-        $contratos = [
-            '1' => 'Temporal',
-            '2' => 'Interinato',
-            '3' => 'Definitivo',
-        ];
+        $Contracts = collect(config('work-collections.Contracts'));
 
-        return $contratos[$contrato] ?? null;
+        return $Contracts->firstWhere('id', (int)$contrato)['nombre'] ?? null;
     }
 
     public static function getHoras($horas)
     {
-        $horasMap = [
-            '1' => '20',
-            '2' => '24',
-            '3' => '36',
-            '4' => '40',
-            '5' => '48',
-            '6' => 'No aplica',
-            '7' => 'Carga 0',
-        ];
+        $Hours = collect(config('work-collections.Hours'));
 
-        return $horasMap[$horas] ?? null;
+        return $Hours->firstWhere('id', (int)$horas)['nombre'] ?? null;
     }
 
     public static function getGrado($grado)
     {
-        $grados = [
-            '1' => 'Primaria',
-            '2' => 'Secundaria',
-            '3' => 'Bachillerato',
-            '4' => 'Carrera técnica',
-            '5' => 'Licenciatura/Ingeniería',
-            '6' => 'Especialidad',
-            '7' => 'Maestría',
-            '8' => 'Doctorado',
-            '9' => 'Sin estudios',
-        ];
+        $grados = collect(config('collections.grados'));
 
-        return $grados[$grado] ?? null;
+        return $grados->firstWhere('id', (int)$grado)['nombre'] ?? null;
     }
+
+/*
+    Funcion para obtener el id de un grado
+*/
+    public static function getGradoId($nombre)
+    {
+        $grados = collect(config('collections.grados'));
+       
+        return $grados->firstWhere('nombre', ucfirst(strtolower($nombre)))['id'] ?? null;
+    }
+
+
+    public static function getState($estado)
+    {
+        $states = collect(config('collections.estados'));
+
+        return $states->firstWhere('id', (int)$estado)['nombre'] ?? null;
+    }
+
+    public static function getStateId($nombre)
+    {
+        $states = collect(config('collections.estados'));
+
+        return $states->firstWhere('nombre', ucfirst(strtolower($nombre)))['id'] ?? null;
+    }
+ 
+
+
+
+
 }

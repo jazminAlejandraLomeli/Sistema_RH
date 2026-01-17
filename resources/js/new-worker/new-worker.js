@@ -4,237 +4,193 @@
 */
 import Swal, { swal } from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
-import { activeLoading, disableLoading } from "../loading-screen.js";
-import { request_code } from "./request/search-code.js";
-import { request_insert } from "./request/add_new_worker.js";
-import { AxiosError } from "../helpers/Alertas.js";
-import { Nombramiento } from "./validation/nombramiento-autorrellenable.js";
-import { Validar_datos } from "./validation/validate-data.js";
-import { Validate_Data } from "./validation/validate-job-data.js";
-
-import {
-    validarCampo,
-    regexFecha,
-    ocultarerr,
-    mostrarerr,
-    fechaActual,
-    automaicScroll,
-} from "../helpers/generalFuntions.js";
 import TomSelect from "tom-select";
 import "tom-select/dist/css/tom-select.css";
 
-var V_nacimiento = true;
-var V_ingreso = true;
-const fecha_nacimiento = $("#fecha_nacimiento");
-const fecha_ingreso = $("#fecha_ingreso");
+import { activeLoading, disableLoading } from "../loading-screen.js";
+import { automaicScroll } from "../helpers/generalFuntions.js";
+
+import { request_insert } from "./request/add_new_worker.js";
+import { AxiosError, confirmAction } from "../helpers/Alertas.js";
+import { eventNombramiento } from "../helpers/form/nombramiento-autorrellenable.js";
+
+import { get_form_personal_data } from "../helpers/form/helpers/get-personal-data.js";
+import { SearchCode } from "../helpers/form/request/available-code.js";
+import { validateWorkData } from "../helpers/form/validations/validate-work-data.js";
+// INPUTS DEL FORMULARIO DE NOMBRAMIENTO
+import { inputs_job } from "./inputs/get-inputs-job-form.js";
+import { AddressData, PersonalData } from "./inputs/get-inputs-personal.js";
+import { expandTextArea } from "../helpers/form/templates/text-area-auto-expand.js";
+import { clearForm } from "../helpers/form/helpers/extract-obj-values.js";
 
 window.addEventListener("load", function () {
-    disableLoading(); /// ya que se cargue todo quitar el loadin
-    FormPersonalData();
+    disableLoading(); /// ya que se cargue todo quitar el loadin.
 
     const tooltipTriggerList = document.querySelectorAll(
         '[data-bs-toggle="tooltip"]'
     );
-    tooltipTriggerList.forEach((tooltip) => new bootstrap.Tooltip(tooltip));
+    const tooltipList = [...tooltipTriggerList].map(
+        (el) =>
+            new bootstrap.Tooltip(el, {
+                html: true,  
+            })
+    );
 
     new TomSelect("#department", {
         sortField: { field: "text" },
         plugins: ["remove_button"],
         maxItems: 10,
     });
+
+    new TomSelect("#state", {
+        create: true,
+        sortField: {
+            field: "text",
+            direction: "asc",
+        },
+    });
+
+    $("#status").val(1); // estado por defecto
+
+    listenButton(PersonalData, AddressData);
+    clicClear();
+    clicBack();
 });
 
 /* 
-  Funcion para validar que las fechas ingresadas sean validas
+    Esperar el clic del boton de sigui
 */
-function listenData() {
-    $(fecha_nacimiento).on("change", function () {
-        let date = $(this).val();
+function listenButton(PersonalData, AddressData) {
+    $("#personal-data").off("click");
+    $("#personal-data").on("click", function () {
+        // Se ejecula las veces que se de clic
+        get_form_personal_data(PersonalData, AddressData)
+            .then((reponse) => {
+                if (reponse) {
+                    const { Codigo } = PersonalData;
 
-        if (date > fechaActual) {
-            validarCampo("", regexFecha, fecha_nacimiento);
-            V_nacimiento = false;
-        } else {
-            // Si la fecha seleccionada es válida, oculta el mensaje de error si estaba visible
-            validarCampo(date, regexFecha, "#fecha_nacimiento");
-        }
-    });
+                    SearchCode(Codigo.val()).then((avaliable) => {
+                        // Verificar si el codigo esta disponible
 
-    $(fecha_ingreso).on("change", function () {
-        let ingreso = $(this).val();
-
-        if (ingreso > fechaActual) {
-            // validarCampo("", regexFecha, "#fecha_ingreso");
-            V_ingreso = false;
-            mostrarerr("#fecha_ingreso");
-        } else {
-            ocultarerr("#fecha_ingreso");
-            // Si la fecha seleccionada es válida, oculta el mensaje de error si estaba visible
-            validarCampo(ingreso, regexFecha, fecha_ingreso);
-        }
+                        if (avaliable) {
+                            showSteptTwo(PersonalData, AddressData);
+                        } else {
+                            return;
+                        }
+                    });
+                } else {
+                    return;
+                }
+            })
+            .catch((error) => console.error(error));
     });
 }
 
 /*
-    Validar datos personales
+    Funcion que muestra el formualrio de los datos del nombramiento.
+    Para este paso el CODIGO esta disponible y los datos personales estan validados
 */
-async function FormPersonalData() {
-    listenData();
-    $("#personal-data").off("click");
-    $("#personal-data").on("click", function () {
-        /* objeto con los inputs */
-        const data = {
-            Codigo: $("#codigo"),
-            Genero: $("#sex"),
-            nombre: $("#name_P"),
-            f_nacimiento: $("#fecha_nacimiento"),
-            f_ingreso: $("#fecha_ingreso"),
-            estudios: $("#grade"),
-            correo: $("#correo"),
-            telefono: $("#tel"),
-            nombre_e: $("#Emer_name"),
-            parentesco: $("#parentesco"),
-        };
-
-        // Validar los datos
-        let Validate_data = Validar_datos(data);
-
-        if (Validate_data) {
-            const PersonalData = {
-                Codigo: $("#codigo").val().trim(),
-                Genero: $("#sex").val(),
-                nombre: $("#name_P").val().trim(),
-                f_nacimiento: $("#fecha_nacimiento").val(),
-                f_ingreso: $("#fecha_ingreso").val(),
-                estudios: $("#grade").val(),
-                correo: $("#correo").val().trim(),
-                telefono: $("#tel").val().trim(),
-                nombre_e: $("#Emer_name").val().trim(),
-                parentesco: $("#parentesco").val().trim(),
-            };
-
-            SearchCode($("#codigo").val().trim(), PersonalData);
-        }
-    });
-}
-/* Funcion que valida que el codigo esta disponible una vez que de da clic al boton de siguiente, si elcodigo esi esta 
-    disponible se llama a la funcion que busca el nombramiento y las distinciones
-*/
-async function SearchCode(codigo, PersonalData) {
-    const Data = {
-        Codigo: codigo,
-    };
-
-    try {
-        // Verificar si el código está disponible
-        const response = await request_code(Data);
-
-        // Codigo disponible
-        if (response) {
-            $(".job-data").fadeIn(700).removeClass("d-none");
-
-            const resultado = await Nombramiento(PersonalData.Genero);
-
-            // Nombramientos y distincion
-            if (resultado) {
-                if (!$(".back").hasClass("d-none")) {
-                    $(".back").addClass("d-none");
-                }
-
-                automaicScroll(".job-data");
-                clicCancel();
-                // Pasamos a la funcion de validar los datos
-                Form_job_validate(PersonalData);
-            }
-        } else {
-            $(".job-data").fadeOut(900).addClass("d-none");
-        }
-    } catch (error) {
-        disableLoading();
-        AxiosError(
-            error,
-            "Algo salio mal al obtener los datos, intentalo otra vez."
-        );
-    }
+function showSteptTwo(PersonalData, AddressData) {
+    // Show next step
+    $(".job-data").fadeIn(700).removeClass("d-none");
+    automaicScroll(".job-data");
+    expandTextArea(PersonalData.Oficial);
+    Form_job_validate(PersonalData, AddressData);
 }
 
 /* Funcion que obtiene losa datos del formulario y los valida */
-function Form_job_validate(PersonalData) {
-    ObtenerContrato("#contrato");
-    $("#confirm-register").off("click");
-    $("#confirm-register").on("click", function () {
-        const job_data = Validate_Data(PersonalData);
+function Form_job_validate(PersonalData, AddressData) {
+    const { Genero } = PersonalData;
 
-        if (job_data != null) {
-            confirm_insert(PersonalData, job_data);
-        } else {
-        }
-    });
+    const { Nombramiento } = inputs_job;
+
+    eventNombramiento(Genero.val(), Nombramiento, inputs_job)
+        .then((reponse) => {
+            $("#confirm-register").off("click");
+            $("#confirm-register").on("click", function () {
+                if (validateWorkData(inputs_job)) {
+                    confirm_insert(PersonalData, AddressData, inputs_job);
+                } else {
+                    AxiosError(
+                        "Error",
+                        "Parece que ingresaste un dato incorrecto o vacio."
+                    );
+                }
+            });
+        })
+        .catch((error) => console.error(error));
 }
+
 /*
-    Funcion para mostrar la fecha de termino o no segun el contrato que se selccione
+    Funcion que pide una confirmacion de agregar el registro al sistema
 */
-export function ObtenerContrato(campo) {
-    $(campo).on("change", function () {
-        let Tipo = parseInt($(campo).val());
-
-        if (Tipo < 3) {
-            if ($(".Contrato").hasClass("d-none")) {
-                // Agregarle la propiedad si no la tiene
-                $(".Contrato").fadeIn(500).removeClass("d-none");
-            }
-        } else {
-            if (!$(".Contrato").hasClass("d-none")) {
-                // Agregarle la propiedad si no la tiene
-                $(".Contrato").fadeOut(500).addClass("d-none");
-            }
-        }
-    });
-}
-
-async function confirm_insert(personal, job) {
+async function confirm_insert(personal, address, job) {
     try {
-        const result = await Swal.fire({
-            title: "¿Estás seguro de agregar el nuevo registro al sistema?",
-            icon: "warning",
-            text: "Revisa que los datos sean correctos.",
-            showCancelButton: true,
-            reverseButtons: true,
-            confirmButtonColor: "#007F73",
-            confirmButtonText:'Confirmar',
-            cancelButtonText: 'Cancelar',
-            cancelButtonColor: "#B04759",
-        });
-
-        if (result.isConfirmed) {
-            await request_insert(personal, job);
-        }
+        await confirmAction(
+            {
+                title: "¿Estás seguro de agregar el nuevo registro al sistema?",
+                text: "Revisa que los datos sean correctos.",
+            },
+            async () => {
+                await request_insert(personal, address, job);
+            }
+        );
     } catch (error) {
-        // Manejo de errores
+        console.error(error);
         AxiosError(error, "Algo salio mal, intentalo otra vez.");
     }
 }
 
-function clicCancel() {
-    $(".cancel").off("click");
-    $(".cancel").on("click", function () {
+function clicClear() {
+    $("#button-clear").off("click");
+    $("#button-clear").on("click", function () {
         confirmar();
     });
 }
+
+function clicBack() {
+    $(".class-button-back").off("click");
+    $(".class-button-back").on("click", function () {
+        back();
+    });
+}
+
 /*
     Funcion que pide una confirmacion de cancelacion en caso de dar clic al boton de cancelar
 */
 async function confirmar() {
     Swal.fire({
-        title: "¿Estás seguro de cancelar la acción?",
-        text: "Se perderán todos los cambios que haz realizado.",
+        title: "¿Estás seguro de limpiar el formulario?",
+        text: "Se perderán los datos que haz ingresado.",
         icon: "warning",
         reverseButtons: true,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#A72703",
         cancelButtonColor: "#CE802C",
-        confirmButtonText: "Si, cancelar",
-        cancelButtonText: "No, seguir aqui",
+        confirmButtonText: "Si, limpiar",
+        cancelButtonText: "No, cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // limpiar formulario
+            clearForm(PersonalData);
+            clearForm(AddressData);
+
+            //window.location.href = "/personal";
+        }
+    });
+}
+
+async function back() {
+    Swal.fire({
+        title: "¿Estás seguro de regresar?",
+        text: "Se perderán los datos que haz ingresado.",
+        icon: "warning",
+        reverseButtons: true,
+        showCancelButton: true,
+        confirmButtonColor: "#A72703 ",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Si, regresar",
+        cancelButtonText: "No, continuar",
     }).then((result) => {
         if (result.isConfirmed) {
             window.location.href = "/personal";

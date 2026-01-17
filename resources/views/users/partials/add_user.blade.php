@@ -13,8 +13,9 @@
                     <p class="texto"></p>
                 </div>
                 <div id="paso1">
-                    <div class="mt-1 col-12 d-flex justify-content-center align-items-center" id="texto">
-                        <p style="font-size: 1rem;"> Ingresa los datos correspondientes </p>
+                    <div class="mt-1 col-12 d-flex justify-content-center align-items-start" id="texto">
+                        <p style="font-size: 1rem;"> El código debe pertenecer a una persona del centro universitario
+                        </p>
                     </div>
 
                     <div class="row">
@@ -23,35 +24,14 @@
                                 requiredIndicator="true" maxlength="7" />
 
                         </div>
-                        <div class="col-4 mt-1">
-                           <abbr  data-bs-toggle="tooltip" data-bs-html="true"
+                        <div class="col-4 mt-2">
+
+                            <div class="flex-fill flex-lg-grow-0 mt-4" data-bs-toggle="tooltip" data-bs-html="true"
                                 data-bs-title="Buscar el código de la persona.">
-                             <button class="btn button-save fst-normal animated-icon px-4 mt-4" type="button"
-                                id="SearchCode" tabindex="0">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Buscar
-                            </button>
-                           </abbr>
+                                <x-save-button-component text="Buscar" id="SearchCode" />
+                            </div>
                         </div>
                     </div>
-
-
-                    {{-- <div class="row mx-2 mb-3">
-                        <div class="col-8 text-center ">
-                            <label for="user_name" class="fw-normal">Código</label>
-                            <input type="text" class="form-control" id="user_name"
-                                placeholder="Código de trabajador" maxlength="7">
-                            <span class="text-danger fw-normal" style=" display: none;">Código
-                                no válido.</span>
-                        </div>
-                        <div class="col-4">
-                            <a class="btn btn-search fst-normal ms-2 animated-icon px-2 mt-4" type="button"
-                                id="SearchCode" tabindex="0">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                                Buscar
-                            </a>
-                        </div>
-                    </div> --}}
                 </div>
                 <div class="row d-flex justify-content-center align-items-center paso2 d-none">
                     <p class="text-center pt-0" style="font-size: 1rem;">Datos del usuario </p>
@@ -91,14 +71,22 @@
                 </div>
 
             </div>
-            <div class="modal-footer mb-1 pb-0 mt-2">
-                <button type="button" class="btn button-cancel close_modal border" data-bs-dismiss="modal"
-                    aria-label="Close">Cancelar</button>
+            <div class="modal-footer mb-1 pb-0 mt-2 py-3">
+              
 
-                <abbr data-bs-toggle="tooltip" data-bs-html="true"
-                                data-bs-title="Guardar los datos del usuario.">
-                    <button class="btn button-save border d-none" type="button" id="save-User"> Guardar </button>
-                </abbr>
+                <div class="flex-fill flex-lg-grow-0" data-bs-toggle="tooltip" data-bs-html="true"
+                    data-bs-title="Cancelar la operación.">
+                    <x-delete-button-component text="Cancelar" class="close_modal" data-bs-dismiss="modal"
+                    aria-label="Close" />
+                </div>
+                
+                <div class="flex-fill flex-lg-grow-0 paso2 d-none" data-bs-toggle="tooltip" data-bs-html="true"
+                    data-bs-title="Cancelar la operación.">
+                    <x-save-button-component text="Guardar" id="save-User" />
+                </div>
+
+                
+
             </div>
         </div>
     </div>

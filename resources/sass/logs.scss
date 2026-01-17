@@ -1,0 +1,44 @@
+.icon-card {
+    width: 50px;
+    height: 50px;
+}
+
+.card-decription {
+    padding: 10px;
+    text-align: justify;
+}
+
+/* Aplica al contenedor de la paginación */
+.d-flex.justify-content-between.mt-3 {
+    align-items: center;
+    gap: 1rem; /* espacio entre texto y botones */
+}
+
+/* Si quieres separar específicamente el texto del bloque de botones */
+.d-flex.justify-content-between.mt-3 > span:first-child {
+    margin-right: 1rem;
+}
+
+
+.cont-loader {
+    position: absolute; /* Muy importante */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 10; /* se aplicará correctamente ahora */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user{
+    cursor: help;
+}
+
+/* Especificar el max y min para las cards */
+.description{
+    max-height: 150px;
+    min-height: 150px;
+    overflow-y: auto;
+}

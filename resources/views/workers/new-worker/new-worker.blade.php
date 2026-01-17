@@ -12,12 +12,13 @@
 
         @include('workers.new-worker.partials.personal-data-form')
         <br>
-        @include('workers.new-worker.partials.job-form')
+        <div class="d-none job-data">
+            @include('workers.new-worker.partials.job-form')
+        </div>
         <br><br>
 
-@endsection
+    @endsection
 
     @section('scripts')
         @vite('resources/js/new-worker/new-worker.js')
     @endsection
- 

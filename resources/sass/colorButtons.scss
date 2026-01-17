@@ -1,117 +1,99 @@
 /*
-   Estilos de los colores de los botones
+    Estilos de los colores de los botones - System RH
 */
 @import "variables";
 
-.button-save {
-    border: 2px solid #27548a !important; /* Grosor y color */
-    border-style: solid dotted solid dotted; /* Estilo de cada lado */
-    padding: 8px 16px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados opcionales */
-    background-color: transparent; /* Fondo transparente */
-    color: black; /* Color del texto */
-    transition: all 0.3s ease-in-out; /* Animación suave */
+// Estilo base para evitar repetición (Mix-in opcional)
+%button-base {
+    border-width: 2px !important;
+    border-style: solid dotted solid dotted; 
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: transparent;
+    color: $black; // Usando tu variable Piedra Oscuro
+    font-family: $font-family-sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
-.button-save:hover,
-.button-save:focus {
-    background-color: #27548a;
-    color: white;
-    border-color: #27548a; /* Cambio de color del borde en hover */
+.button-save {
+    @extend %button-base;
+    border-color: $primary !important; // Esmeralda
+
+    &:hover, &:focus {
+        background-color: $primary;
+        color: $white;
+        border-color: $primary;
+        box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+    }
 }
 
 .button-cancel {
-    border: 2px solid #ce802c !important; /* Grosor y color */
-    border-style: solid dotted solid dotted; /* Estilo de cada lado */
-    padding: 8px 16px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados opcionales */
-    background-color: transparent; /* Fondo transparente */
-    color: black; /* Color del texto */
-    transition: all 0.3s ease-in-out; /* Animación suave */
-}
+    @extend %button-base;
+    // Un tono arena oscuro para cancelar, más elegante que el naranja
+    border-color: #A8A29E !important; 
 
-.button-cancel:hover,
-.button-cancel:focus {
-    background-color: #ce802c;
-    color: white;
-    border-color: #ce802c; /* Cambio de color del borde en hover */
+    &:hover, &:focus {
+        background-color: #A8A29E;
+        color: $white;
+        border-color: #A8A29E;
+    }
 }
 
 .button-add {
-    border: 2px solid #2f9ada !important; /* Grosor y color */
-    border-style: solid dotted solid dotted; /* Estilo de cada lado */
-    padding: 8px 16px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados opcionales */
-    background-color: transparent; /* Fondo transparente */
-    color: black; /* Color del texto */
-    transition: all 0.3s ease-in-out; /* Animación suave */
-}
+    @extend %button-base;
+    // Verde menta fuerte para acciones positivas de añadir
+    border-color: #10B981 !important; 
 
-.button-add:hover,
-.button-add:focus {
-    background-color: #2f9ada;
-    color: white;
-    border-color: #2f9ada; /* Cambio de color del borde en hover */
+    &:hover, &:focus {
+        background-color: #10B981;
+        color: $white;
+        border-color: #10B981;
+    }
 }
 
 .button-eliminar {
-    border: 2px solid #a50808d8 !important; /* Grosor y color */
-    border-style: solid dotted solid dotted; /* Estilo de cada lado */
-    padding: 8px 16px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados opcionales */
-    background-color: transparent; /* Fondo transparente */
-    color: black; /* Color del texto */
-    transition: all 0.3s ease-in-out; /* Animación suave */
-}
+    @extend %button-base;
+    // Un rojo "Tierra" que combina con los tonos cálidos del sistema
+    border-color: #B91C1C !important; 
 
-.button-eliminar:hover,
-.button-eliminar:focus {
-    background-color: #a50808d8;
-    color: white;
-    border-color: #a50808d8; /* Cambio de color del borde en hover */
+    &:hover, &:focus {
+        background-color: #B91C1C;
+        color: $white;
+        border-color: #B91C1C;
+    }
 }
 
 .button-details {
-    border: 2px solid #006a71 !important; /* Grosor y color */
-    border-style: solid dotted solid dotted; /* Estilo de cada lado */
-    padding: 8px 16px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados opcionales */
-    background-color: transparent; /* Fondo transparente */
-    color: black; /* Color del texto */
-    transition: all 0.3s ease-in-out; /* Animación suave */
-}
+    @extend %button-base;
+    border-color: $secundary !important; // Verde bosque profundo
 
-.button-details:hover,
-.button-details:focus {
-    background-color: #006a71;
-    color: white;
-    border-color: #006a71; /* Cambio de color del borde en hover */
+    &:hover, &:focus {
+        background-color: $secundary;
+        color: $white;
+        border-color: $secundary;
+    }
 }
 
 .button-edit {
-    border: 2px solid #336d82 !important; /* Grosor y color */
-    border-style: solid dotted solid dotted; /* Estilo de cada lado */
-    padding: 8px 16px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados opcionales */
-    background-color: transparent; /* Fondo transparente */
-    color: black; /* Color del texto */
-    transition: all 0.3s ease-in-out; /* Animación suave */
+    @extend %button-base;
+    // Un tono ocre/dorado suave para edición (combina con el icono del login)
+    border-color: #D97706 !important; 
+
+    &:hover, &:focus {
+        background-color: #D97706;
+        color: $white;
+        border-color: #D97706;
+    }
 }
 
-.button-edit:hover,
-.button-edit:focus {
-    background-color: #336d82;
-    color: white;
-    border-color: #336d82; /* Cambio de color del borde en hover */
-}
-
-.button-white{
-    //.button-white:hover{
-    color: white;
+.button-white {
+    color: $white;
+    transition: opacity 0.3s;
     
-}
-
-.button-white:hover,
-.button-white:focus {
-    color: white;
+    &:hover, &:focus {
+        color: $white;
+        opacity: 0.8;
+    }
 }

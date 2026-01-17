@@ -1,35 +1,39 @@
-// Body
-$bg-light: #ffffff;
  
-$bg-primary : #f4f4f4;
-$Degradado: radial-gradient(circle, #06033d, #121676);
-
-// Colors
-$primary: #373cc4;
-$primary-opacity: #3035ace0;
-$secundary: #2a2ea0;
-$white: #ffffff;
-$black : #000000;
-$text-color-opacity: rgba(21, 100, 137, 0.45);
-$text-white : #fff;
-
-$bg-color-opacity : rgba(21, 100, 137, 0.15);
-$bg-color-opactity-md : rgba(21, 100, 137, 0.4);
-$bg-color-opactity-lg : rgba(21, 100, 137, 0.6);
-
-// Inputs
-$input-bg: #b3c9e93b;
-
-// Borders Colors
-$border-primary: rgba(21, 100, 137, 0.45);
-
-// Typography
-$font-family-sans-serif: 'Poppins', 'monserrat';
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
-
 // Images
 $image-login: '/public/images/banner_login_2.webp';
 
+ 
+
+// Body & Canvas
+$bg-light: #FFFFFF;
+$bg-primary: #F7F7F5; // Un "Hueso" muy claro y cálido, no es el gris frío de siempre
+$Degradado: linear-gradient(135deg, #064E3B 0%, #065F46 100%); // Verde bosque profundo (Elegante y privado)
+
+// Colors (Paleta "Emerald & Stone")
+$primary: #059669;           // Verde Esmeralda (Transmite crecimiento y equilibrio)
+$primary-opacity: rgba(5, 150, 105, 0.9);
+$secundary: #064E3B;         // Verde ultra oscuro para headers
+$white: #ffffff;
+$black: #1C1917;             // Un tono "Piedra" casi negro (Stone-900)
+$text-color-opacity: rgba(120, 113, 108, 0.6); // Gris piedra suave
+
+// Fondos con Transparencia (Estilo Orgánico)
+$bg-color-opacity: rgba(5, 150, 105, 0.05); 
+$bg-color-opactity-md: rgba(5, 150, 105, 0.12);
+$bg-color-opactity-lg: rgba(5, 150, 105, 0.25);
+
+// Inputs (Look moderno y limpio)
+$input-bg: #FFFFFF;           // Fondo blanco puro para destacar sobre el fondo $bg-primary
+$input-border-focus: #059669;
+
+// Borders Colors
+$border-primary: #E7E5E4;     // Color piedra muy claro
+
+// Typography
+$font-family-sans-serif: 'Outfit', 'Quicksand', sans-serif; // Fuentes modernas y menos "vistas"
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
 // Color card 
-$bg-container: #eeeeee;
+$bg-container: #FFFFFF;
+$shadow-sm: 0 2px 4px rgba(28, 25, 23, 0.05); // Sombra muy sutil color piedra

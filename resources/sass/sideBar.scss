@@ -71,7 +71,8 @@ body{
 
     
     .logo-custom {
-        height: 50px;
+        height: 60px;
+        width: auto;
     }
 
     .collapseIcon {
@@ -207,6 +208,12 @@ body{
     color: white;
 }
 
+
+.hr-style {
+    height: 4px;
+    background: linear-gradient(135deg, #064E3B 0%, #065F46 100%); 
+    border-radius: 2rem;
+}
 /* Media queries*/
 
 // Movil

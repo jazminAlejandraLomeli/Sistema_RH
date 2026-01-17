@@ -2,7 +2,7 @@
 <header id="header" class="movil-collapse d-flex flex-column ">
     <section class="d-flex justify-content-center px-2 py-3" id="headerTop">
         <section class="flex-grow-1 hidden">
-            <img class="logo-custom" src="{{ asset('images/SIP-CUAltos.webp') }}" />
+            <img class="logo-custom" src="{{ asset('images/Rh_logo.png') }}" alt="Logo de SIP-CUAltos" />
         </section>
         <section class="d-flex justify-content-center align-items-center">
             <div class="btn-header" id="compressSidebar">
@@ -75,7 +75,7 @@
                     <div class="collapse navbar-submenu" id="collapsePersonal">
                         <ul class="nav-options">
                             <li>
-                                <a href="{{ route('personal.index') }}" class="text-white" title="Lista de personal">
+                                <a href="{{ route('worker.index') }}" class="text-white" title="Lista de personal">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                         class="icons-navbar">
                                         <path fill-rule="evenodd"
@@ -157,7 +157,6 @@
             @endhasanyrole
 
 
-
             @role('Administrador')
                 <li>
                     <a data-bs-toggle="collapse" href="#collapseUsers" role="button" aria-expanded="false"
@@ -187,6 +186,16 @@
                                             clip-rule="evenodd" />
                                     </svg>
                                     <span class="hidden">Lista de usuarios</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('logs.index') }}" class="text-white" title="Acciones de los usuarios">
+                                   
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icons-navbar">
+                                        <path fill="currentColor"
+                                            d="M3 17.577v-.608q0-.657.367-1.178t.964-.818q1.252-.629 2.606-.996q1.355-.367 2.763-.367q.273 0 .435.226t.094.518q-.092.371-.129.742q-.036.371-.036.748q0 .475.072.929q.074.454.195.912q.104.348-.086.639t-.537.292h-5.67q-.44 0-.739-.3Q3 18.017 3 17.577m13.616-.5q.748 0 1.277-.53q.53-.53.53-1.278t-.53-1.278t-1.277-.53t-1.278.53t-.53 1.278t.53 1.278q.53.53 1.278.53M10 11.384q-1.246 0-2.123-.876Q7 9.63 7 8.385t.877-2.123T10 5.385t2.123.877T13 8.385t-.877 2.123t-2.123.877m6.158 7.354l-.093-.797q-.415-.086-.783-.291t-.663-.52l-.763.321q-.152.061-.282.004t-.209-.179l-.065-.12q-.079-.126-.058-.284t.142-.248l.647-.475q-.166-.427-.166-.88t.166-.882l-.627-.513q-.121-.09-.152-.236q-.03-.145.048-.272l.071-.125q.079-.12.215-.179t.289.004l.744.321q.275-.315.653-.51t.794-.282l.092-.802q.017-.158.135-.255t.276-.097h.131q.158 0 .276.1t.136.258l.073.796q.415.087.793.285t.653.519l.733-.321q.157-.067.29-.01q.133.058.212.185l.084.119q.079.127.048.275q-.03.148-.152.239l-.627.513q.166.416.166.875t-.166.875l.647.475q.12.09.142.245q.02.155-.058.282l-.071.125q-.079.121-.206.179t-.279-.004l-.763-.321q-.294.315-.663.52t-.783.291l-.073.802q-.018.158-.136.255t-.276.097h-.13q-.158 0-.277-.1t-.135-.257" />
+                                    </svg>
+                                    <span class="hidden">Acciones</span>
                                 </a>
                             </li>
 

@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Update_Personal_DataRequest;
 use App\Helpers\FormatHelper;
+use App\Http\Requests\UpdatePersonalRequest;
 use Illuminate\Http\Request;
 use App\Models\Administrativo;
+use App\Models\Estado;
+use App\Services\LogsDataService;
+use App\Services\PersonDataService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -28,15 +32,9 @@ class PersonasController extends Controller
 
         return view('workers.index', compact('breadcrumbs'));
     }
-
-
     public function getWorkers(Request $request)
     {
-
-
         try {
-
-
             $param = $request->input('param', '');
             $offset = $request->input('offset', 0);
             $limit = $request->input('limit', 10);
@@ -48,15 +46,17 @@ class PersonasController extends Controller
             /* Busca por nombre, codigo, sexo o estado */
             if (!empty($search)) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('codigo', 'like', "%$search%")
-                        ->orWhere('nombre', 'like', "%$search%")
-                        // Buscar por nombre en la tabla "estados" (activo, inactivo, etc.)
+                    $q->where('codigo', 'like', "%{$search}%")
+                        ->orWhere('nombre', 'like', "%{$search}%")
+                        // Buscar en la relación 'estado'
                         ->orWhereHas('estado', function ($subQuery) use ($search) {
-                            $subQuery->where('nombre', 'like', "%$search%");
+                            $subQuery->where('nombre', 'like', "%{$search}%");
                         })
+                        // Buscar en la relación anidada 'trabajos.nombramientoPersona'
                         ->orWhereHas('trabajos.nombramientoPersona', function ($subQuery) use ($search) {
-                            $subQuery->where('nombre', 'like', "%$search%");
-                        });
+                            $subQuery->where('nombre', 'like', "%{$search}%");
+                        })
+                    ;
                 });
             }
 
@@ -64,6 +64,7 @@ class PersonasController extends Controller
             $total_Personas = $query->count();
             $personas = $query->skip($offset)
                 ->take($limit)
+                ->orderBy('nombre', 'ASC')
                 ->get()
                 ->map(function ($persona) {
                     return [
@@ -71,7 +72,7 @@ class PersonasController extends Controller
                         'id_estado' => $persona->estado_id,
                         'codigo' => $persona->codigo,
                         'nombre' => $persona->nombre,
-                        'nombramiento' => $persona->trabajos[0]->nombramientoPersona->nombre,
+                        'nombramiento' => $persona->trabajos[0]->nombramientoPersona->nombre ?? '--',
                         'estatus' => $persona->estado->nombre,
                     ];
                 });
@@ -85,57 +86,59 @@ class PersonasController extends Controller
     /* 
         Funcion para hacer un Update a los datos personales  
     */
-    public function updatePerson(Update_Personal_DataRequest $request, $id_persona)
+    public function edit($id)
     {
-
-
-        $validatedData = $request->validated();
-
-        $Codigo = $request['Codigo'];
-        $Nombre = $request['nombre'];
-        $F_NacimienTo = $request['f_nacimiento'];
-        $F_Ingreso = $request['f_ingreso'];
-        $Correo = $request['correo'];
-        $name_emer = $request['name_emergencia'];
-        $Telefono = $request['tel_emergencia'];
-        $parentesco = $request['parentesco_emergencia'];
-        /*
-            Mapear los datos 
-        */
-
-        $Estado = $request['estado_id'];
-
-        $Genero = FormatHelper::getSexo($request['genero']);
-        $Grado = FormatHelper::getGrado($request['estudios']);
 
         try {
 
-            DB::beginTransaction();
-            $administrativo = Administrativo::findOrFail($id_persona);
+            $breadcrumbs = [
+                ['name' => 'Inicio', 'url' => route('home.index')],
+                ['name' => 'Personal', 'url' => route('worker.index')],
+                ['name' => 'Detalles', 'url' => route('worker.detalles.mostrar', $id)],
+                ['name' => 'Editar datos personales'],
+            ];
 
-            $administrativo->update([
-                'nombre' => $Nombre,
-                'correo' => $Correo,
-                'codigo' => $Codigo,
-                'fecha_nacimiento' => $F_NacimienTo,
-                'estado_id' => $Estado,
-                'sexo' => $Genero,
-                'tel_emergencia' => $Telefono,
-                'nombre_emergencia' => $name_emer,
-                'ultimo_grado' => $Grado,
-                'fecha_ingreso' => $F_Ingreso,
-                'e_parentesco' => $parentesco,
-            ]);
-
-            DB::commit();
-
-            return response()->json(['status' => 200, 'msg' => '¡Exito! Registro fue editado correctamente.']);
+            $worker = PersonDataService::getWorker($id);
+            $estados = Estado::all();
+            //   return response()->json($worker);
+            return view('workers.details.update.personal', compact('breadcrumbs', 'worker', 'estados'));
         } catch (\Exception $e) {
-            DB::rollBack();
+            Log::error('Error al obtener los datos del trabajador ' . $e->getMessage());
+            return response()->json(['msg' => '¡Error!, Algo salió mal, inténtalo más tarde.', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+
+    /*
+    Función para actualizar los datos personales de un trabajador 
+*/
+    public function update(UpdatePersonalRequest $request)
+    {
+
+        try {
+            $data = $request['Personal'];
+            $id =  $data['Id'];
+            // Enviar datos para el Updated 
+            PersonDataService::update($data, $id);
+            // Logs
+            if ($data['Status'] == 5) {
+                LogsDataService::inactive_personal($data['Codigo'], $data['Nombre']);
+            } else {
+
+                LogsDataService::update_personal_data($data['Codigo'], $data['Nombre']);
+            }
+
+
+            return response()->json([
+                'status' => 200,
+                'msg' => '¡Éxito! Los datos del trabajador fueron actualizados.'
+            ]);
+        } catch (\Exception $e) {
             Log::error('Error al actualizar los datos del trabajador ' . $e->getMessage());
             return response()->json(['msg' => '¡Error!, Algo salió mal, inténtalo más tarde.', 'error' => $e->getMessage()], 500);
         }
     }
+
 
     public function getWorkersDesigner(Request $request)
     {
@@ -284,35 +287,61 @@ class PersonasController extends Controller
     */
     private function getQueryWithFilters($param)
     {
+        // Query general 
+        $baseQuery = Administrativo::with([
+            'estado',
+            'trabajos' => fn($q) => $q->where('id_estado', 1),
+            'trabajos.nombramientoPersona'
+        ]);
 
-        $baseQuery = Administrativo::with('estado', 'trabajos', 'trabajos.nombramientoPersona')
-            ->whereHas('trabajos', fn($query) => $query->where('id_estado', 1));
-
+        // Inicializa la query base
         $query = $baseQuery;
 
-        if ($param == 'Femenino' || $param == 'Masculino') {    /// Genero
+        //   Filtro por género
+        if ($param === 'Femenino' || $param === 'Masculino') {
             $query = $baseQuery->where('sexo', $param);
-        } else if ($param === 'Temporal' || $param === 'Interinato') {  // Tipo de contrato proximo a expirar
+        }
 
-            $query = $baseQuery->whereHas('trabajos', function ($subQuery) use ($param) {
-                $subQuery->where('tipo_contrato', $param);
-            });
+        //  Filtro por contratos "Temporal" o "Interinato"
+        else if ($param === 'Temporal' || $param === 'Interinato') {
 
-            $aMonthsFromNow = Carbon::now()->addMonths(1);
-            $query = $query->whereHas('trabajos', function ($subQuery) use ($aMonthsFromNow) {
-                $subQuery->whereBetween('fecha_termino', [Carbon::now(), $aMonthsFromNow]);
-            });
-        } else if ($param === 'Expired-Interinato') {   // Proximos Interinatos Expirados
+            $aMonthFromNow = Carbon::now()->addMonths(1);
 
-            $query = $baseQuery->whereHas('trabajos', function ($subQuery) {
-                $subQuery->where('tipo_contrato', 'Interinato')
-                    ->where('fecha_termino', '<', Carbon::today());
+            $query = $baseQuery->where(function ($q) use ($param, $aMonthFromNow) {
+                $q->whereHas('trabajos', function ($subQuery) use ($param, $aMonthFromNow) {
+                    $subQuery->where('tipo_contrato', $param)
+                        ->whereBetween('fecha_termino', [Carbon::now(), $aMonthFromNow]);
+                })
+                    // 👇 Esto permite incluir también los administrativos sin trabajos
+                    ->orDoesntHave('trabajos');
             });
-        } else if ($param === 'Expired-Temporal') {  // Proximos Temporales Expirados
-            $query = $baseQuery->whereHas('trabajos', function ($subQuery) {
-                $subQuery->where('tipo_contrato', 'Temporal')
-                    ->where('fecha_termino', '<', Carbon::today());
+        }
+
+        //  Filtro por Interinatos expirados
+        else if ($param === 'Expired-Interinato') {
+            $query = $baseQuery->where(function ($q) {
+                $q->whereHas('trabajos', function ($subQuery) {
+                    $subQuery->where('tipo_contrato', 'Interinato')
+                        ->where('fecha_termino', '<', Carbon::today());
+                })
+                    ->orDoesntHave('trabajos');
             });
+        }
+
+        // Filtro por Temporales expirados
+        else if ($param === 'Expired-Temporal') {
+            $query = $baseQuery->where(function ($q) {
+                $q->whereHas('trabajos', function ($subQuery) {
+                    $subQuery->where('tipo_contrato', 'Temporal')
+                        ->where('fecha_termino', '<', Carbon::today());
+                })
+                    ->orDoesntHave('trabajos');
+            });
+        }
+
+        // Si no coincide con ningún filtro específico
+        else {
+            $query = $baseQuery;
         }
 
         return $query;

@@ -3,7 +3,12 @@
 
 .card {
     background-color: $bg-container !important;
+    border: none !important;
+
+    box-shadow: 0 5px 8px rgb(0 0 0 / 0.2);
+    border-radius: 8px 5px 5px 8px !important;
 }
+
 .boton-abajo {
     margin-top: 10px;
     margin-bottom: -55px;
@@ -47,15 +52,19 @@
 }
 
 .bg-grid {
-    background-color: #373cc4 !important;
+    background-color: #059669 !important;
     font-style: normal;
 }
 
-
-.semblanza{
+.semblanza {
     min-height: 100px;
-
 
     max-height: 180px;
     overflow-y: auto;
+}
+
+
+
+.delete-pt .form-group {
+    padding-top: 0 !important;
 }

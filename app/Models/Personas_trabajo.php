@@ -88,10 +88,7 @@ class Personas_trabajo extends Model
         return $this->hasOne(Jerarquia::class,'area_distincion','area_distincion');
     }
 
-    // public function jerarquias () : BelongsToMany
-    // {   
-    //     return $this->belongsToMany(Jerarquia::class,'area_trabajador','trabajo_id','jerarquia_id');
-    // }
+     
     
 
 }

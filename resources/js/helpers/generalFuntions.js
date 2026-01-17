@@ -6,22 +6,24 @@ export const regexLetrasHorario = /^[a-zA-Z0-9áÁéÉíÍóÓúÚÑñ\s-:,.]+$/
 export const regexHorario = /^\d{2}:\d{2}\s-\s\d{2}:\d{2}$/;
 export const regexNumero = /^(?=.*\d)/;
 export const regexFecha = /^\d{4}-\d{2}-\d{2}$/;
-export const regexCorreo =/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const regexDecimal = /^(?=.*\d)(?:\d*\.\d+|\d+)$/;
 export const regexDecimal_mayor = /^(?=.*\d)(?!0*\.0*$)\d*(?:\.\d+)?$/;
 export const regexTelefono = /^[0-9]{10}$/;
 export const regexArea = /^[a-zA-Z0-9áÁéÉíÍóÓúÚÑñ.,()# -]+$/;
- export const regexText = /^[a-zA-Z0-9áÁéÉíÍóÓúÚÑñ\s-:,.]*$/;
-
+export const regexText = /^[a-zA-Z0-9áÁéÉíÍóÓúÚÑñ\s-:,.]*$/;
+export const regexCP = /^[0-9]{5}$/;
+export const regexNSS = /^[0-9]{11}$/;
+export const regexRFC = /^([A-ZÑ&]{3,4})\d{6}([A-Z0-9]{3})$/i;
 
 /* Funcion para validar los campos segun su contenido con la expresion Regular, y marcando el error con rojo */
 export function validarCampo(valor, regex, campo) {
     if (!regex.test(valor)) {
         mostrarerr(campo);
-        return false;  
+        return false;
     } else {
         ocultarerr(campo);
-        return true;  
+        return true;
     }
 }
 
@@ -58,14 +60,13 @@ export function CalcularTiempos(fecha) {
     return edad;
 }
 
-
 export function agregarCero(num) {
     return num < 10 ? "0" + num : num;
 }
 
-   // Obtener la fecha actual
-    var fecha = new Date();
-    var añoActual = fecha.getFullYear();
-    var mesActual = agregarCero(fecha.getMonth() + 1); // Sumamos 1 porque getMonth() devuelve el mes comenzando desde 0
-    var díaActual = agregarCero(fecha.getDate());
- export const fechaActual = añoActual + "-" + mesActual + "-" + díaActual;
+// Obtener la fecha actual
+var fecha = new Date();
+var añoActual = fecha.getFullYear();
+var mesActual = agregarCero(fecha.getMonth() + 1); // Sumamos 1 porque getMonth() devuelve el mes comenzando desde 0
+var díaActual = agregarCero(fecha.getDate());
+export const fechaActual = añoActual + "-" + mesActual + "-" + díaActual;

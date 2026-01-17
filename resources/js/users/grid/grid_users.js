@@ -20,11 +20,30 @@ export async function initialData(clicDetails, clicReset, clicDelete) {
 
                 {
                     id: "Username",
-                    name: "Código",
+                    name: "Usuario",
+                    formatter: (_, row) => {
+                        return h(
+                            "div",
+                            {
+                                className: "d-flex flex-column ",
+                            },
+                            h("span",
+                                {
+                                    className: "fw-bolder",
+                                },
+                                row.cells[2].data),
+                            h("span",
+                                {
+                                    className: "fw-normal",
+                                },
+                                row.cells[3].data),
+                        );
+                    },
                 },
                 {
                     id: "nombre",
                     name: "Nombre",
+                    hidden: true,
                 },
                 {
                     id: "Rol",
@@ -41,7 +60,7 @@ export async function initialData(clicDetails, clicReset, clicDelete) {
                             statusHtml = h(
                                 "span",
                                 {
-                                    className: "text-success fw-medium",
+                                    className: "text-success fw-bolder",
                                 },
                                 status
                             );
@@ -49,7 +68,7 @@ export async function initialData(clicDetails, clicReset, clicDelete) {
                             statusHtml = h(
                                 "span",
                                 {
-                                    className: "text-danger fw-medium",
+                                    className: "text-danger fw-bolder",
                                 },
                                 status
                             );
@@ -89,9 +108,17 @@ export async function initialData(clicDetails, clicReset, clicDelete) {
                                     "button",
                                     {
                                         className: "btn-grid",
-
-                                        onClick: () =>
-                                            clicDetails(row.cells[0].data),
+                                        ...(status === "Activo"
+                                            ? {
+                                                  onClick: () =>
+                                                      clicDetails(
+                                                          row.cells[0].data
+                                                      ),
+                                              }
+                                            : {
+                                                  disabled: true,
+                                                  style: "cursor: not-allowed; opacity: 0.5;",
+                                              }),
                                     },
                                     h(
                                         "svg",
@@ -253,7 +280,6 @@ export async function initialData(clicDetails, clicReset, clicDelete) {
             server: {
                 url: "/usuarios/get-users?",
                 then: (data) => {
-               
                     return data.results.map((user) => [
                         user.id,
                         user?.roles[0]?.id ?? "No tiene rol",

@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Log;
+use Illuminate\Http\Request;
+
+class LogController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $breadcrumbs = [
+            ['name' => 'Inicio', 'url' => route('home.index')],
+            ['name' => 'Logs'],
+        ];
+
+        $logs = Log::with('user')->orderBy('created_at', 'desc')->paginate(3);
+       // return view('usuarios.logs.index', compact('logs'));
+        
+        //return response()->json($Roles);
+        return view('logs.index', compact('breadcrumbs', 'logs'));      // retornar a vista users 
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function getLogs()
+    {
+        $logs = Log::with('user')->paginate(3); // 9 por página (para 3x3 cards)
+        return response()->json($logs);
+    }
+
+
+
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Log $log)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Log $log)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Log $log)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Log $log)
+    {
+        //
+    }
+}

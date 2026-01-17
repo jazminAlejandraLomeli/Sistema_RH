@@ -8,7 +8,7 @@
 }
 
 .card-1 {
-    border-left: 5px solid #007F73 !important;
+    border-left: 5px solid #007f73 !important;
 }
 
 .card-2 {
@@ -19,27 +19,24 @@
 }
 
 .card-4 {
-     border-left: 5px solid #A8BBA3 !important;
+    border-left: 5px solid #a8bba3 !important;
 }
 
 .card-male {
-     border-left: 5px solid #476EAE !important;
+    border-left: 5px solid #476eae !important;
 }
 
 .card-female {
-     border-left: 5px solid #E45A92 !important;
+    border-left: 5px solid #e45a92 !important;
 }
 
-
 .card-proximos {
-     border-left: 5px solid #ED775A !important;
+    border-left: 5px solid #ed775a !important;
 }
 
 .card-expirados {
-     border-left: 5px solid #E43636 !important;
+    border-left: 5px solid #e43636 !important;
 }
-
-
 
 /* Establecer un tamaño para el texto */
 .text-cont {
@@ -74,6 +71,10 @@
     transition: transform 0.3s ease-in-out;
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
+.rounded-icon svg {
+    text-decoration: none;
+    transition: transform 0.3s ease-in-out;
+}
 
 /*
     Cuando se coloca el cursor encima 
@@ -83,4 +84,102 @@
     transform: scale(1.2); /* Aumenta de tamaño */
     cursor: pointer;
 }
- 
+
+.rounded-icon svg:hover,
+.rounded-icon svg:focus {
+    transform: scale(1.2); /* Aumenta de tamaño */
+    cursor: pointer;
+}
+
+/* Estilos para la card de los cumpleaños */
+.card-hbd {
+    border-right: 7px solid #476eae !important;
+    /* Mantiene tu borde original */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rounded-circle {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-hbd .rounded-circle {
+    animation-duration: 5s;
+    /* Ajusta la duración de la animación si es necesario*/
+    animation-iteration-count: infinite;
+}
+
+.modal-btn {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.main-cont {
+    width: 100%; /* Puedes usar píxeles (px), porcentaje (%), u otras unidades */
+    position: relative;
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+.custom-bg {
+    position: relative;
+    background-repeat: no-repeat, no-repeat;
+    background-size: 140px, 140px;
+    /* Fondo 1 = esquina superior derecha, +30px hacia abajo
+        Fondo 2 = esquina inferior izquierda, -30px hacia arriba */
+    background-position: calc(100% - 10px) 30px, 10px calc(100% - 30px);
+
+    /* SVG con opacidad dentro del código */
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNkMWQxZDEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Im0uNzUgMS43NWwyMi41IDMuNTg3TTIuMjkzIDJsMS4wMTQgNC4xNTNhMS4wNjYgMS4wNjYgMCAwIDAgMS44NzMuM2wyLjI1Ni0zLjYzN20yLjA1OC4zMjhMMTAuNTA4IDcuM2ExLjA2NiAxLjA2NiAwIDAgMCAxLjg3Mi4zbDIuMjU3LTMuNjM2bTIuMDU3LjMyOGwxLjAxNCA0LjE1N2ExLjA2NiAxLjA2NiAwIDAgMCAxLjg3My4zbDIuMjU2LTMuNjM2TS43NTkgMTkuNzkzbDIyLjQ5MS04LjY5NU0yLjMgMTkuMmwzLjE0MyAzLjI2NmExLjEzIDEuMTMgMCAwIDAgMS44NzQtLjcyNWwuMTI5LTQuNTMxbTIuMDYxLS43OTlsMy4xNDMgMy4yNjZhMS4xMyAxLjEzIDAgMCAwIDEuODc0LS43MjRsLjEyOS00LjUzMW0yLjA1OC0uNzk2bDMuMTQ0IDMuMjY2YTEuMTI5IDEuMTI5IDAgMCAwIDEuODczLS43MjVsLjEyOS00LjUzMSIvPjwvc3ZnPg=="),
+        url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNlMGRjZGMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiIGQ9Im01LjY1OCAxMS4wMDJsLTEuNDcgMy4zMDhjLTEuODU2IDQuMTc0LTIuNzgzIDYuMjYxLTEuNzcgNy4yNzRzMy4wOTguMDg1IDcuMjcyLTEuNzdMMTMgMTguMzQyYzIuNTE3LTEuMTE5IDMuNzc2LTEuNjc4IDMuOTc2LTIuNzU3cy0uNzc0LTIuMDUzLTIuNzIyLTRsLTEuODM4LTEuODM5Yy0xLjk0Ny0xLjk0OC0yLjkyMS0yLjkyMi00LTIuNzIxYy0xLjA3OS4yLTEuNjM4IDEuNDU5LTIuNzU3IDMuOTc2TTYuNSAxMC41bDcgN20tOS0ybDQgNE0xNiA4bDMtM20tNC44MDMtM2MuNC42NjcuNzE5IDIuNC0xLjE5NyA0bTkgMy44MDNjLS42NjctLjQtMi40LS43MTktNCAxLjE5N20wLTl2LjAyTTIyIDZ2LjAyTTIxIDEzdi4wMk0xMSAzdi4wMiIvPjwvc3ZnPg==");
+}
+
+.icon-list {
+    max-width: 50px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.icon-list::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    transform: translateY(0);
+    border-right: 1px dashed #2d9596;
+}
+
+.cont-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Boton de los cumpleañeros del dia
+.today {
+    transition: transform 0.5s ease;
+
+}
+.today:hover {
+    transform: scale(1.3);
+ }

@@ -1,6 +1,6 @@
 
  
-<div class="col-sm-6 col-md-3 col-xl-2 px-1 mb-3">
+<div class="col-sm-6 col-md-4 col-xl-4 px-3 mb-3">
     <div class="card d-flex flex-column align-items-center py-1" >
         <div class="text-cont">
             <p class="mb-0 fst-italic text-center">

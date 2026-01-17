@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;   // separacion de usuarios
- 
+
 
 class User extends Authenticatable
 {
@@ -60,6 +60,22 @@ class User extends Authenticatable
         return $this->hasMany(Personas_trabajo::class, 'updated_by');
     }
 
+    public function domicilio_creado()
+    {
+        return $this->hasMany(Domicilio::class, 'created_by');
+    }
 
+    public function domicilio_actualizado()
+    {
+        return $this->hasMany(Domicilio::class, 'updated_by');
+    }
 
+    public function log()
+    {
+        return $this->hasMany(Log::class, 'created_by');
+    }
+    public function cumpleanos()
+    {
+        return $this->hasMany(Cumpleanos::class, 'created_by');
+    }
 }
